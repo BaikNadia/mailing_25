@@ -4,9 +4,7 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),  # Вход, выход, восстановление
+    path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/', TemplateView.as_view(template_name='registration/register.html'), name='register'),
     path('', include('mailing.urls')),
 ]
-
-

@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 # --- Клиент ---
 class Client(models.Model):
     email = models.EmailField(unique=True, verbose_name="Email")

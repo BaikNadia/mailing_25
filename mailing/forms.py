@@ -1,6 +1,7 @@
 from django import forms
 from .models import Client, Message, Mailing
 
+
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
@@ -11,6 +12,7 @@ class ClientForm(forms.ModelForm):
             'comment': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
 
+
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
@@ -19,6 +21,7 @@ class MessageForm(forms.ModelForm):
             'subject': forms.TextInput(attrs={'class': 'form-control'}),
             'body': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }
+
 
 class MailingForm(forms.ModelForm):
     class Meta:

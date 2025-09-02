@@ -3,6 +3,7 @@ from .models import MailingAttempt, Mailing
 from django.conf import settings
 from django.utils import timezone
 
+
 def send_mailing(mailing_id):
     """
     Отправка рассылки по ID.

@@ -69,6 +69,7 @@ def client_list(request):
         clients = Client.objects.filter(created_by=request.user).order_by('name')
     return render(request, 'mailing/client_list.html', {'clients': clients})
 
+
 @login_required
 def client_create(request):
     if request.method == 'POST':
@@ -82,6 +83,7 @@ def client_create(request):
     else:
         form = ClientForm()
     return render(request, 'mailing/client_form.html', {'form': form, 'title': 'Добавить получателя'})
+
 
 @login_required
 def client_edit(request, pk):
@@ -97,6 +99,7 @@ def client_edit(request, pk):
     else:
         form = ClientForm(instance=client)
     return render(request, 'mailing/client_form.html', {'form': form, 'title': 'Редактировать получателя'})
+
 
 @login_required
 def client_delete(request, pk):
@@ -116,6 +119,7 @@ def message_list(request):
     messages = Message.objects.all().order_by('-created_at')
     return render(request, 'mailing/message_list.html', {'messages': messages})
 
+
 @login_required
 def message_create(request):
     if request.method == 'POST':
@@ -127,6 +131,7 @@ def message_create(request):
     else:
         form = MessageForm()
     return render(request, 'mailing/message_form.html', {'form': form, 'title': 'Создать сообщение'})
+
 
 @login_required
 def message_edit(request, pk):
@@ -140,6 +145,7 @@ def message_edit(request, pk):
     else:
         form = MessageForm(instance=message)
     return render(request, 'mailing/message_form.html', {'form': form, 'title': 'Редактировать сообщение'})
+
 
 @login_required
 def message_delete(request, pk):
@@ -161,6 +167,7 @@ def mailing_list(request):
         mailings = Mailing.objects.filter(clients__in=clients).distinct().order_by('-first_send')
     return render(request, 'mailing/mailing_list.html', {'mailings': mailings})
 
+
 @login_required
 def mailing_create(request):
     if request.method == 'POST':
@@ -172,6 +179,7 @@ def mailing_create(request):
     else:
         form = MailingForm()
     return render(request, 'mailing/mailing_form.html', {'form': form, 'title': 'Создать рассылку'})
+
 
 @login_required
 def mailing_edit(request, pk):
@@ -191,6 +199,7 @@ def mailing_edit(request, pk):
         form = MailingForm(instance=mailing)
     return render(request, 'mailing/mailing_form.html', {'form': form, 'title': 'Редактировать рассылку'})
 
+
 @login_required
 def mailing_delete(request, pk):
     mailing = get_object_or_404(Mailing, pk=pk)
@@ -202,6 +211,7 @@ def mailing_delete(request, pk):
         return redirect('mailing:mailing_list')
     return render(request, 'mailing/mailing_confirm_delete.html', {'mailing': mailing})
 
+
 @login_required
 def mailing_send_now(request, pk):
     mailing = get_object_or_404(Mailing, pk=pk)
@@ -210,6 +220,7 @@ def mailing_send_now(request, pk):
     send_mailing(mailing.id)
     messages.success(request, f'Рассылка #{mailing.id} отправлена.')
     return redirect('mailing:mailing_list')
+
 
 @login_required
 def mailing_detail(request, pk):

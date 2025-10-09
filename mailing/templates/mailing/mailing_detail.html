@@ -1,0 +1,56 @@
+{% extends "mailing/base.html" %}
+{% block title %}Рассылка #{{ mailing.id }}{% endblock %}
+
+{% block content %}
+<h1>Рассылка #{{ mailing.id }} — {{ mailing.get_status_display }}</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>Первая отправка:</strong> {{ mailing.first_send|date:"d.m.Y H:i" }}</p>
+        <p><strong>Окончание:</strong> {{ mailing.last_send|date:"d.m.Y H:i" }}</p>
+        <p><strong>Сообщение:</strong> {{ mailing.message.subject }}</p>
+        <p><strong>Получателей:</strong> {{ mailing.clients.count }}</p>
+    </div>
+</div>
+
+<h3>Получатели</h3>
+<ul class="list-group mb-4">
+    {% for client in mailing.clients.all %}
+    <li class="list-group-item">{{ client.name }} <{{ client.email }}></li>
+    {% empty %}
+    <li class="list-group-item text-muted">Нет получателей</li>
+    {% endfor %}
+</ul>
+
+<h3>Попытки отправки</h3>
+{% if attempts %}
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Дата и время</th>
+            <th>Статус</th>
+            <th>Ответ сервера</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for attempt in attempts %}
+        <tr class="{% if attempt.status == 'Не успешно' %}table-danger{% endif %}">
+            <td>{{ attempt.attempt_time|date:"d.m.Y H:i:s" }}</td>
+            <td>{{ attempt.status }}</td>
+            <td><small>{{ attempt.server_response|default:"—" }}</small></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Попытки ещё не были выполнены.</p>
+{% endif %}
+
+<div class="mt-4">
+    <a href="{% url 'mailing:mailing_list' %}" class="btn btn-secondary">Назад к списку</a>
+    {% if mailing.status == 'created' %}
+        <a href="{% url 'mailing:mailing_edit' mailing.id %}" class="btn btn-warning">Редактировать</a>
+        <a href="{% url 'mailing:mailing_send_now' mailing.id %}" class="btn btn-success">Отправить сейчас</a>
+    {% endif %}
+</div>
+{% endblock %}
